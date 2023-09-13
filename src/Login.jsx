@@ -31,7 +31,8 @@ function Login() {
         sx={{
           borderRadius: "1vh",
           maxWidth: 1217,
-          width: 500,
+          width: 600,
+          height:400,
           maxHeight: 857,
           boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px;",
         }}
@@ -42,7 +43,7 @@ function Login() {
             image="/static/images/cards/contemplative-reptile.jpg"
             title="green iguana"
           />
-          <CardContent sx={{ width: 450 }}>
+          <CardContent sx={{ width: 550 }}>
             <Typography
               sx={{ textAlign: "left" }}
               gutterBottom
@@ -56,14 +57,14 @@ function Login() {
             <TextField
               fullWidth
               id="standard-basic"
-              label="Username"
+              label="ชื่อผู้ใช้"
               variant="standard"
               sx={{ mb: 3 }}
             />
             <TextField
               fullWidth
               id="standard-basic"
-              label="Password"
+              label="รหัสผ่าน"
               sx={{ mb: 3 }}
               variant="standard"
             />

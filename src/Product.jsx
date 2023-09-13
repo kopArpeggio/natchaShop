@@ -1,7 +1,8 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Divider from "@mui/material/Divider";
 
 function Product() {
   const [alignment, setAlignment] = React.useState("web");
@@ -13,28 +14,6 @@ function Product() {
   return (
     <div>
       <Container>
-        <Box
-          sx={{
-            mt: 5,
-            mb: 5,
-            justifyContent: "center",
-            textAlign: "center",
-            color: "white",
-          }}
-        >
-          <button
-            style={{
-              backgroundColor: "black",
-              color: "white",
-              fontSize: "3vh",
-              fontStyle: "italic",
-              fontWeight: "bold",
-              padding: "20px 50px",
-            }}
-          >
-            Natcha
-          </button>
-        </Box>
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Box
@@ -50,10 +29,15 @@ function Product() {
             />
           </Grid>
           <Grid item xs={6}>
-            <Typography>shirt</Typography>
-            <h2>name#666</h2>
-            <Typography>185</Typography>
-            <Typography>Select size</Typography>
+            <Typography>เสื้อยืด</Typography>
+            <Typography sx={{ fontSize: "4vh" }}>เสื้อยืดแขนสั้น</Typography>
+            <Typography sx={{ fontSize: "4vh" }}>Chainsaw Devil</Typography>
+            <Typography
+              sx={{ fontWeight: "bold", fontSize: "2vh", mt: 2, mb: 2 }}
+            >
+              THB 185
+            </Typography>
+            <Typography sx={{ fontWeight: "bold" }}>ขนาดไซต์</Typography>
 
             <ToggleButtonGroup
               color="primary"
@@ -86,8 +70,25 @@ function Product() {
                 จำนวนสินค้า
               </Button>
             </Box>
+            <Box>
+              <Button
+                variant="contained"
+                color="success"
+                sx={{
+                  backgroundColor: "#2BC660",
+                  padding: "20px 0px 20px 0px",
+                  fontSize: "2vh",
+                  width: "100%",
+                  mt: 2,
+                  borderColor: "black",
+                }}
+              >
+                เพิ่มลงในตะกล้า
+              </Button>
+            </Box>
           </Grid>
         </Grid>
+        <Divider variant="middle" color="black" sx={{ mt: 5, mb: 5 }} />
       </Container>
     </div>
   );
