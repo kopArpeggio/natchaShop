@@ -99,6 +99,10 @@ function Navbar() {
                   backgroundColor: "black",
                   display: "block",
                   padding: "25px 58px 25px 58px",
+                  "&:hover": {
+                    color: "black",
+                    border: "1px solid black",
+                  },
                 }}
               >
                 {page}

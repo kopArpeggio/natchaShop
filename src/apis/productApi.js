@@ -54,9 +54,9 @@ export const updateProductById = async (body) => {
   }
 };
 
-export const deleteProductById = async (id) => {
+export const deleteProductById = async (select) => {
   try {
-    const { status } = await axios.delete(`${DELETE_PRODUCT_BY_ID_API}/${id}`);
+    const { status } = await axios.post(`${DELETE_PRODUCT_BY_ID_API}`, select);
 
     if (status === 200) {
       return true;
