@@ -12,6 +12,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import axios from "axios";
 import setupAxios from "./axios/setupAxios";
 import ProductManagement from "./ProductManagement";
+import ProfileManagement from "./ProfileManagement";
+import Cart from "./Cart";
+import PaymentView from "./PaymentView";
 
 function App() {
   const theme = createTheme({
@@ -21,6 +24,8 @@ function App() {
   });
 
   const [count, setCount] = useState(0);
+
+  const isAuthorized = localStorage.getItem("token");
 
   setupAxios(axios);
 
@@ -32,10 +37,19 @@ function App() {
 
           {/* Your navigation or header can go here */}
           <Routes>
-            <Route path="/" element={<AllProduct />} />
+            {!isAuthorized ? (
+              <Route path="/" element={<Login />} />
+            ) : (
+              <Route path="/" element={<AllProduct />} />
+            )}
+
+            <Route path="/shop" element={<AllProduct />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<Login />} />
             <Route path="/manage-product" element={<ProductManagement />} />
-            {/* <Route path="/contact" element={<Contact />} /> */}
+            <Route path="/product" element={<Product />} />
+            <Route path="/profile" element={<ProfileManagement />} />
+            <Route path="/payment" element={<PaymentView />} />
             {/* Add more routes as needed */}
           </Routes>
         </BrowserRouter>

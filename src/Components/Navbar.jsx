@@ -13,6 +13,8 @@ const pages = ["NPSHOP"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Navbar() {
+  const isAuthorized = localStorage.getItem("token");
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -25,7 +27,7 @@ function Navbar() {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-    navigate("/");
+    navigate("/shop");
   };
 
   const handleCloseUserMenu = () => {
@@ -69,7 +71,7 @@ function Navbar() {
               variant="h5"
               noWrap
               component="a"
-              href="/"
+              href="/shop"
               sx={{
                 display: "flex",
                 fontFamily: "Prompt, sans-serif",
@@ -125,6 +127,9 @@ function Navbar() {
               }}
             />
             <ShoppingBagOutlinedIcon
+              onClick={() => {
+                !isAuthorized ? navigate("/") : navigate("/cart");
+              }}
               sx={{
                 fontSize: "5vh",
                 backgroundColor: "white",
@@ -134,6 +139,10 @@ function Navbar() {
               }}
             />
             <PersonOutlineOutlinedIcon
+              // onClick={() => navigate("/profile")}
+              onClick={() => {
+                !isAuthorized ? navigate("/") : navigate("/profile");
+              }}
               sx={{
                 fontSize: "5vh",
                 backgroundColor: "white",

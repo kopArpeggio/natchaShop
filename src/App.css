@@ -5,6 +5,20 @@
   text-align: center; */
 }
 
+.toggle-button {
+  width: 6vh;
+  border: 2px solid black;
+  border-radius: 4px;
+  /* Adjust border-radius as needed */
+  margin-right: 2px;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+
 /* .logo {
   height: 6em;
   padding: 1.5em;

@@ -23,37 +23,24 @@ function AllProduct() {
   useEffect(() => {
     getAllProduct().then((res) => {
       setProduct(res?.data);
-      console.log(res?.data);
     });
     // console.log(test);
   }, []);
 
   var itemsPerPage = 8;
-  const pages = [
-    "Chainsawman",
-    3,
-    5,
-    1,
-    4,
-    1,
-    23,
-    45,
-    12,
-    5,
-    "Attack on Titan",
-  ];
+
   const totalPages = Math.ceil(product?.length / itemsPerPage);
 
   return (
     <div>
-      <Container>
+      <Container sx={{ maxWidth: "90%" }} maxWidth={false}>
         <Typography>เสื้อยืด(แขนสั้น)</Typography>
         <Grid container spacing={2}>
           {product
             .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
             .map((item, index) => (
               <Grid item key={index} xs={3}>
-                <ProductCard productName={item?.name} price={item?.price} />
+                <ProductCard product={item} />
               </Grid>
             ))}
         </Grid>
@@ -68,7 +55,7 @@ function AllProduct() {
             }}
             disabled={currentPage === 1}
           >
-            Previous Page
+            ก่อนหน้า
           </Button>
 
           <Button
@@ -79,7 +66,7 @@ function AllProduct() {
             }}
             disabled={currentPage === totalPages}
           >
-            Next Page
+            หน้าถัดไป
           </Button>
         </div>
       </Container>

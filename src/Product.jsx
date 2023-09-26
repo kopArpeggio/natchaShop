@@ -1,14 +1,67 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Divider from "@mui/material/Divider";
+import { useLocation } from "react-router-dom";
+import { getProductById } from "./apis/productApi";
+import { getImageUrl } from "./utils/utils";
 
 function Product() {
   const [alignment, setAlignment] = React.useState("web");
+  const [size, setSize] = useState("");
+  const location = useLocation();
+
+  const [product, setProduct] = useState("");
+  const productId = location?.state && location?.state?.productId;
+
+  const formattedPrice = new Intl.NumberFormat("en-US").format(product?.price);
+
+  const [cartItems, setCartItems] = useState(
+    JSON.parse(localStorage.getItem("cartItems")) || []
+  );
+  const [totalPrice, setTotalPrice] = useState(
+    parseFloat(localStorage.getItem("totalPrice")) || 0
+  );
+
+  useEffect(() => {
+    getProductById(productId).then((res) => {
+      setProduct(res?.data);
+    });
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    localStorage.setItem("totalPrice", totalPrice);
+  }, [cartItems, totalPrice]);
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
+    setSize(event?.target?.value);
+  };
+
+  const addItemToCart = (item) => {
+    const itemIndex = cartItems.findIndex(
+      (cartItem) => cartItem.name === item.name
+    );
+
+    if (itemIndex !== -1) {
+      // If the item already exists, update its quantity
+      const updatedCartItems = [...cartItems];
+      updatedCartItems[itemIndex].quantity += 1;
+      updatedCartItems[itemIndex].size = item?.size;
+
+      setCartItems(updatedCartItems);
+      setTotalPrice(totalPrice + item.price);
+    } else {
+      // If the item doesn't exist, add it to the cart
+      setCartItems([...cartItems, { ...item, quantity: 1 }]);
+      setTotalPrice(totalPrice + item.price);
+    }
+  };
+
+  const removeItemFromCart = (index) => {
+    const updatedCartItems = [...cartItems];
+    const removedItem = updatedCartItems.splice(index, 1)[0];
+    setCartItems(updatedCartItems);
+    setTotalPrice(totalPrice - removedItem.price);
   };
 
   return (
@@ -20,22 +73,32 @@ function Product() {
               component="img"
               sx={{
                 height: 615,
-                width: 632,
-                maxHeight: { xs: 615, md: 400 },
-                maxWidth: { xs: 632, md: 300 },
+                width: 650,
+                maxHeight: { xs: 615, md: 420 },
+                maxWidth: { xs: 650, md: 420 },
               }}
               alt="Item."
-              src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80"
+              src={
+                product?.picture
+                  ? getImageUrl(product?.picture)
+                  : "/assets/img/no-image.png"
+              }
             />
           </Grid>
           <Grid item xs={6}>
             <Typography>เสื้อยืด</Typography>
-            <Typography sx={{ fontSize: "4vh" }}>เสื้อยืดแขนสั้น</Typography>
-            <Typography sx={{ fontSize: "4vh" }}>Chainsaw Devil</Typography>
+            <Typography sx={{ fontSize: "3vh" }}>เสื้อยืดแขนสั้น</Typography>
+            <Typography sx={{ fontSize: "4vh" }}>{product?.name}</Typography>
             <Typography
-              sx={{ fontWeight: "bold", fontSize: "2vh", mt: 2, mb: 2 }}
+              sx={{
+                fontWeight: "900",
+                fontSize: "3vh",
+                mt: 2,
+                mb: 2,
+                WebkitTextStroke: "2px black",
+              }}
             >
-              THB 185
+              THB {formattedPrice}
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>ขนาดไซต์</Typography>
 
@@ -46,34 +109,111 @@ function Product() {
               onChange={handleChange}
               aria-label="Platform"
             >
-              <ToggleButton value="s" sx={{ marginRight: 2 }}>
+              <ToggleButton
+                value="s"
+                sx={{
+                  marginRight: 2,
+                  width: "6vh",
+                  outlineWidth: "1px",
+                  outlineColor: "black",
+                  outlineStyle: "solid",
+                  color: "black",
+                  "&.Mui-selected, &.Mui-selected:hover": {
+                    color: "white",
+                    backgroundColor: "black",
+                  },
+                }}
+              >
                 S
               </ToggleButton>
-              <ToggleButton value="m" sx={{ marginRight: 2 }}>
+              <ToggleButton
+                value="m"
+                sx={{
+                  marginRight: 2,
+                  width: "6vh",
+                  outlineWidth: "1px",
+                  outlineColor: "black",
+                  outlineStyle: "solid",
+                  color: "black",
+                  "&.Mui-selected, &.Mui-selected:hover": {
+                    color: "white",
+                    backgroundColor: "black",
+                  },
+                }}
+              >
                 M
               </ToggleButton>
-              <ToggleButton value="l" sx={{ marginRight: 2 }}>
+              <ToggleButton
+                value="l"
+                sx={{
+                  marginRight: 2,
+                  width: "6vh",
+                  outlineWidth: "1px",
+                  outlineColor: "black",
+                  outlineStyle: "solid",
+                  color: "black",
+                  "&.Mui-selected, &.Mui-selected:hover": {
+                    color: "white",
+                    backgroundColor: "black",
+                  },
+                }}
+              >
                 L
               </ToggleButton>
-              <ToggleButton value="xl">XL</ToggleButton>
+              <ToggleButton
+                sx={{
+                  marginRight: 2,
+                  width: "6vh",
+                  outlineWidth: "1px",
+                  outlineColor: "black",
+                  outlineStyle: "solid",
+                  color: "black",
+                  "&.Mui-selected, &.Mui-selected:hover": {
+                    color: "white",
+                    backgroundColor: "black",
+                  },
+                }}
+                value="xl"
+              >
+                XL
+              </ToggleButton>
             </ToggleButtonGroup>
+
+            {size == "" ? (
+              <Typography sx={{ color: "red", mt: 1 }}>
+                **โปรดเลือกไซต์
+              </Typography>
+            ) : (
+              ""
+            )}
             <Box>
               <Button
                 variant="outlined"
                 sx={{
                   mt: 2,
+                  fontSize: "2vh",
                   padding: "10px 40px",
                   color: "black",
                   borderColor: "black",
                 }}
               >
-                จำนวนสินค้า
+                จำนวนสินค้า : {product?.quantity}
               </Button>
             </Box>
             <Box>
               <Button
+                disabled={size == ""}
                 variant="contained"
                 color="success"
+                onClick={() =>
+                  addItemToCart({
+                    product_id: product?.id,
+                    name: product?.name,
+                    price: Math.floor(product?.price),
+                    size: size,
+                    picture: product?.picture,
+                  })
+                }
                 sx={{
                   backgroundColor: "#2BC660",
                   padding: "20px 0px 20px 0px",

@@ -26,10 +26,13 @@ import AddIcon from "@mui/icons-material/Add";
 import AddProduct from "./Components/Modal/AddProduct";
 import UpdateProduct from "./Components/Modal/UpdateProduct";
 import { getImageUrl } from "./utils/utils";
+import { getOrder, getOrderById } from "./apis/orderApi";
+import PaymentViewModal from "./Components/Modal/PaymentViewModal";
 
-function ProductManagement() {
+function PaymentView() {
   const [select, setSelect] = useState([]);
-  const [rows, setRow] = useState([]);
+  const [order, setOrder] = useState([]);
+  const [item, setItem] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalUpdateOpen, setModalUpdateOpen] = useState(false);
 
@@ -46,7 +49,7 @@ function ProductManagement() {
     { field: "id", headerName: "ID", width: 70 },
     {
       field: "picture",
-      headerName: "ภาพสินค้า",
+      headerName: "ภาพสลิปโอน",
       width: 150,
       flex: 1,
       renderCell: (params) => (
@@ -64,8 +67,8 @@ function ProductManagement() {
               alt="Product Image"
               height="120"
               image={
-                params?.row?.picture
-                  ? getImageUrl(params?.row?.picture)
+                params?.row?.slipPicture
+                  ? getImageUrl(params?.row?.slipPicture)
                   : "/assets/img/no-image.png"
               } // Replace with the actual image URL
             />
@@ -73,15 +76,23 @@ function ProductManagement() {
         </div>
       ),
     },
-    { field: "name", headerName: "ชื่อ", width: 130, flex: 2 },
+    {
+      field: "name",
+      headerName: "ชื่อลูกค้า",
+      width: 130,
+      flex: 2,
+      renderCell: (params) => params?.row?.Member?.name,
+    },
     {
       field: "price",
-      headerName: "ราคา",
+      headerName: "รวม",
       width: 130,
-      align: "right",
+      align: "left",
       flex: 1,
-      valueFormatter: ({ value }) => {
-        const formattedValue = currencyFormatter.format(value);
+      renderCell: (params) => {
+        const formattedValue = currencyFormatter.format(
+          params?.row?.totalPrice
+        );
         return `${formattedValue} บาท`;
       },
     },
@@ -91,9 +102,11 @@ function ProductManagement() {
       type: "number",
       width: 90,
       flex: 1,
-      valueFormatter: ({ value }) => {
-        const formattedValue = currencyFormatter.format(value);
-        return `${formattedValue}`;
+      renderCell: (params) => {
+        const formattedValue = currencyFormatter.format(
+          params?.row?.OrderDetails?.length
+        );
+        return `${formattedValue} รายการ`;
       },
     },
     {
@@ -119,13 +132,13 @@ function ProductManagement() {
               },
             }}
             onClick={() => {
-              getProductById(params?.row?.id).then((res) => {
-                setProduct(res?.data);
-                setModalUpdateOpen(true);
+              getOrderById(params?.row?.id).then((res) => {
+                setItem(res?.data);
+                setModalOpen(true);
               });
             }}
           >
-            แก้ไข
+            รายละเอียด
           </Button>
         </div>
       ),
@@ -138,38 +151,38 @@ function ProductManagement() {
 
   const handleClose = () => {
     getAllProduct().then((res) => {
-      setRow(res?.data);
       setModalOpen(false);
       setModalUpdateOpen(false);
     });
   };
 
   useEffect(() => {
-    getAllProduct().then((res) => {
-      setRow(res?.data);
+    getOrder().then((res) => {
+      setOrder(res?.data);
     });
   }, []);
 
   return (
     <div style={{ padding: "0px 20px 0px 20px" }}>
       <>
-        <AddProduct
-          handleClose={handleClose}
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-        />
         <UpdateProduct
           handleClose={handleClose}
           setModalOpen={setModalUpdateOpen}
           modalOpen={modalUpdateOpen}
           product={product}
         />
+        <PaymentViewModal
+          handleClose={handleClose}
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          order={item}
+        />
 
         <DataGrid
           sx={{ fontSize: "18px" }}
           disableRowSelectionOnClick
           rowHeight={80}
-          rows={rows}
+          rows={order}
           columns={columns}
           initialState={{
             pagination: {
@@ -187,7 +200,7 @@ function ProductManagement() {
                 <Box sx={{ flexGrow: 1 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={6}>
-                      <Button
+                      {/* <Button
                         variant="contained"
                         sx={{ ml: 1, mt: 1, fontSize: 16 }}
                         color="info"
@@ -206,7 +219,7 @@ function ProductManagement() {
                           onClick={() => {
                             deleteProductById({ select }).then((res) => {
                               getAllProduct().then((res) => {
-                                setRow(res?.data);
+                                setItem(res?.data);
                               });
                             });
                           }}
@@ -214,7 +227,7 @@ function ProductManagement() {
                           <DeleteIcon />
                           ลบรายการที่เลือก
                         </Button>
-                      )}
+                      )} */}
                     </Grid>
                     <Grid
                       item
@@ -234,4 +247,4 @@ function ProductManagement() {
   );
 }
 
-export default ProductManagement;
+export default PaymentView;

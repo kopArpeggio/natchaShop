@@ -7,6 +7,7 @@ const GET_ALL_PRODUCT_API = `${prefix}/get-all-product`;
 const CREATE_PRODUCT_API = `${prefix}/create-product`;
 const UPDATE_PRODUCT_BY_ID_API = `${prefix}/update-product-by-id`;
 const DELETE_PRODUCT_BY_ID_API = `${prefix}/delete-product-by-id`;
+const GET_PRODUCT_BY_ID = `${prefix}/get-product-by-id`;
 
 export const getAllProduct = async () => {
   try {
@@ -24,7 +25,19 @@ export const getAllProduct = async () => {
 
 export const createProduct = async (body) => {
   try {
-    const { status } = await axios.post(`${CREATE_PRODUCT_API}`, body);
+    const form = new FormData();
+    form.append("picture", body?.picture);
+    const { status } = await axios.post(
+      `${CREATE_PRODUCT_API}`,
+      { ...body, form },
+      {
+        headers: {
+          accept: "application/json",
+          "Accept-Language": "en-US,en;q=0.8",
+          "Content-Type": `multipart/form-data; boundary=${body?.picture?._boundary}`,
+        },
+      }
+    );
 
     if (status === 201) {
       return true;
@@ -39,9 +52,18 @@ export const createProduct = async (body) => {
 
 export const updateProductById = async (body) => {
   try {
+    const form = new FormData();
+    form.append("picture", body?.picture);
     const { status } = await axios.put(
       `${UPDATE_PRODUCT_BY_ID_API}/${body?.id}`,
-      body
+      { ...body, form },
+      {
+        headers: {
+          accept: "application/json",
+          "Accept-Language": "en-US,en;q=0.8",
+          "Content-Type": `multipart/form-data; boundary=${body?.picture?._boundary}`,
+        },
+      }
     );
 
     if (status === 200) {
@@ -65,5 +87,17 @@ export const deleteProductById = async (select) => {
     const err = error?.response?.data?.error;
 
     //   sweetAlertError(err);
+  }
+};
+
+export const getProductById = async (id) => {
+  try {
+    const { status, data } = await axios.get(`${GET_PRODUCT_BY_ID}/${id}`);
+
+    if (status === 200) {
+      return data;
+    }
+  } catch (error) {
+    const err = error?.response?.data?.error;
   }
 };

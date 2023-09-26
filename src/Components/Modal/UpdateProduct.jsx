@@ -1,21 +1,12 @@
-import {
-  Backdrop,
-  Box,
-  Button,
-  FormControl,
-  Modal,
-  TextField,
-  Typography,
-} from "@mui/material";
-import React, { useState } from "react";
+import { Backdrop, Box, Button, Modal, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { getProductById, updateProductById } from "../../apis/productApi";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createProduct } from "../../apis/productApi";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { getImageUrl } from "../../utils/utils";
 
-function AddProduct({ modalOpen, setModalOpen, handleClose }) {
-  const [file, setFile] = useState("");
-
+function UpdateProduct({ setModalOpen, modalOpen, handleClose, product }) {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("โปรดกรอกชื่อสินค้า"),
     price: Yup.number()
@@ -30,17 +21,20 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
       .typeError("ต้องเป็นตัวเลขเท่านั้น"),
   });
 
+  const [file, setFile] = useState();
+
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      name: "",
-      price: "",
-      quantity: "",
-      picture: "",
+      name: product ? product?.name : "",
+      price: product ? product?.price : "",
+      quantity: product ? product?.quantity : "",
+      id: product ? product?.id : "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values, { setValues }) => {
-      createProduct(values).then(() => {
-        setValues(formik.initialValues);
+    onSubmit: (values) => {
+      updateProductById(values).then(() => {
+        setFile("");
         handleClose(); // Close the modal after submission
       });
     },
@@ -67,8 +61,8 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
         open={modalOpen}
         onClose={() => {
           formik.resetForm();
-          setFile("");
           setModalOpen(false);
+          setFile("");
         }}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
@@ -88,7 +82,7 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
                 id="standard-basic"
                 label="ชื่อสินค้า"
                 sx={{ margin: "5px", width: "100%" }}
-                value={formik.values.name}
+                value={product?.name || formik.values.name || ""}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.name && Boolean(formik.errors.name)}
@@ -99,7 +93,7 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
 
             <Box>
               <TextField
-                value={formik?.values?.price}
+                value={formik?.values?.price || product?.price || ""}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.price && Boolean(formik.errors.price)}
@@ -113,7 +107,7 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
 
             <Box>
               <TextField
-                value={formik?.values?.quantity}
+                value={formik?.values?.quantity || product?.quantity || ""}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
@@ -169,7 +163,13 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
             >
               <img
                 // src={!file ? "/assets/img/no-image.png" : file}
-                src={file ? file : "/assets/img/no-image.png"}
+                src={
+                  file
+                    ? file
+                    : product?.picture
+                    ? getImageUrl(product?.picture)
+                    : "/assets/img/no-image.png"
+                }
                 style={{ width: 150 }}
               />
             </Box>
@@ -196,7 +196,6 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
                 variant="contained"
                 onClick={() => {
                   setModalOpen(false);
-                  setFile("");
                 }}
               >
                 ปิด
@@ -209,4 +208,4 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
   );
 }
 
-export default AddProduct;
+export default UpdateProduct;

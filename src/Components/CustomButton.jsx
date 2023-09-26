@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 
-function CustomButton({ Title }) {
+function CustomButton({ Title, Type }) {
   return (
     <div>
       <Button
@@ -11,6 +11,7 @@ function CustomButton({ Title }) {
           fontSize: "18px",
           borderRadius: "2vh",
         }}
+        type={Type ? Type : ""}
         variant="contained"
         size="large"
       >
