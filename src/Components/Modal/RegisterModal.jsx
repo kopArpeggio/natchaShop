@@ -45,6 +45,8 @@ function RegisterModal({ modalOpen, setModalOpen }) {
     onSubmit: (values) => {
       registerMember(values).then((res) => {
         console.log(res?.data);
+        formik.resetForm();
+        setModalOpen(false);
       });
     },
   });

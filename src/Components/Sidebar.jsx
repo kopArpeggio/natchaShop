@@ -11,6 +11,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import PersonIcon from "@mui/icons-material/Person";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import React from "react";
 
@@ -69,6 +70,19 @@ function Sidebar({ setComponent }) {
               <ManageAccountsIcon />
             </ListItemIcon>
             <ListItemText primary={"แก้ไขบัญชี"} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
+              localStorage.setItem("token", "");
+              window.location.reload();
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary={"ออกจากระบบ"} />
           </ListItemButton>
         </ListItem>
       </List>

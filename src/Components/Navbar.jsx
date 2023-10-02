@@ -8,22 +8,19 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { userData } from "../apis/rootApi";
+import SearchModal from "./Modal/SearchModal";
 
 const pages = ["NPSHOP"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Navbar() {
   const isAuthorized = localStorage.getItem("token");
+  const [role, setRole] = React.useState("");
+  const [openModal, setOpenModal] = React.useState(false);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -33,6 +30,14 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  useEffect(() => {
+    if (isAuthorized) {
+      userData().then((res) => {
+        setRole(res?.data?.role);
+      });
+    }
+  }, []);
 
   const navigate = useNavigate();
 
@@ -59,6 +64,7 @@ function Navbar() {
         >
           {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
 
+          <SearchModal setModalOpen={setOpenModal} modalOpen={openModal} />
           <Box
             sx={{
               flexGrow: { md: 0, xs: 1 },
@@ -82,6 +88,44 @@ function Navbar() {
             >
               เสื้อยืด
             </Typography>
+            {role === "admin" ? (
+              <>
+                <Typography
+                  variant="h5"
+                  noWrap
+                  component="a"
+                  href="/manage-product"
+                  sx={{
+                    ml: 4,
+                    display: "flex",
+                    fontFamily: "Prompt, sans-serif",
+                    letterSpacing: ".1rem",
+                    color: "black",
+                    textDecoration: "none",
+                  }}
+                >
+                  จัดการสินค้า
+                </Typography>
+                <Typography
+                  variant="h5"
+                  noWrap
+                  component="a"
+                  href="/payment"
+                  sx={{
+                    ml: 4,
+                    display: "flex",
+                    fontFamily: "Prompt, sans-serif",
+                    letterSpacing: ".1rem",
+                    color: "black",
+                    textDecoration: "none",
+                  }}
+                >
+                  ออเดอร์
+                </Typography>
+              </>
+            ) : (
+              ""
+            )}
           </Box>
 
           <Box
@@ -120,6 +164,9 @@ function Navbar() {
             }}
           >
             <SearchIcon
+              onClick={() => {
+                setOpenModal(true);
+              }}
               sx={{
                 fontSize: "5vh",
                 color: "black",

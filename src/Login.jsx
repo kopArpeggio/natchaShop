@@ -36,8 +36,12 @@ function Login() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       loginMember(values).then((user) => {
-        localStorage.setItem("token", user?.accessToken);
-        window.location.reload();
+        if (user?.accessToken) {
+          localStorage.setItem("token", user?.accessToken);
+          window.location.reload();
+        }else{
+          "ALERT"
+        }
       });
     },
   });
@@ -141,7 +145,6 @@ function Login() {
               }}
             >
               <CustomButton Title={"ล็อกอิน"} Type={"submit"} />
-              <CustomButton Title={"ยกเลิก"} />
             </CardActions>
           </div>
         </Card>

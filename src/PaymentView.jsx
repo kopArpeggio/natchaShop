@@ -1,47 +1,16 @@
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  TextField,
-  Typography,
-  CardMedia,
-  CardContent,
-  Card,
-  Grid,
-} from "@mui/material";
+import { Box, Button, CardMedia, Card, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import {
-  createProduct,
-  deleteProductById,
-  getAllProduct,
-  getProductById,
-  updateProductById,
-} from "./apis/productApi";
+import { getAllProduct } from "./apis/productApi";
 import { DataGrid, GridPagination } from "@mui/x-data-grid";
-import CustomButton from "./Components/CustomButton";
-import { Title } from "@mui/icons-material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import AddProduct from "./Components/Modal/AddProduct";
-import UpdateProduct from "./Components/Modal/UpdateProduct";
+
 import { getImageUrl } from "./utils/utils";
 import { getOrder, getOrderById } from "./apis/orderApi";
 import PaymentViewModal from "./Components/Modal/PaymentViewModal";
 
 function PaymentView() {
-  const [select, setSelect] = useState([]);
   const [order, setOrder] = useState([]);
   const [item, setItem] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalUpdateOpen, setModalUpdateOpen] = useState(false);
-
-  const [product, setProduct] = useState({
-    name: "",
-    price: "",
-    quantity: "",
-    id: "",
-  });
 
   const currencyFormatter = new Intl.NumberFormat("en-US");
 
@@ -150,27 +119,21 @@ function PaymentView() {
   ];
 
   const handleClose = () => {
-    getAllProduct().then((res) => {
+    getAllProduct().then(() => {
       setModalOpen(false);
-      setModalUpdateOpen(false);
     });
   };
 
   useEffect(() => {
     getOrder().then((res) => {
       setOrder(res?.data);
+      console.log(res?.data);
     });
   }, []);
 
   return (
     <div style={{ padding: "0px 20px 0px 20px" }}>
       <>
-        <UpdateProduct
-          handleClose={handleClose}
-          setModalOpen={setModalUpdateOpen}
-          modalOpen={modalUpdateOpen}
-          product={product}
-        />
         <PaymentViewModal
           handleClose={handleClose}
           modalOpen={modalOpen}
@@ -190,10 +153,6 @@ function PaymentView() {
             },
           }}
           pageSizeOptions={[10, 20]}
-          checkboxSelection
-          onRowSelectionModelChange={(val) => {
-            setSelect(val);
-          }}
           slots={{
             footer: () => (
               <>

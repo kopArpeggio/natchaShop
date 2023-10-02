@@ -12,6 +12,7 @@ export const getOrder = async () => {
     const { status, data } = await axios.get(`${GET_ORDER_API}`);
 
     if (status === 200) {
+      console.log(data);
       return data;
     }
   } catch (error) {

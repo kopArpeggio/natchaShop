@@ -39,19 +39,18 @@ function Product() {
 
   const addItemToCart = (item) => {
     const itemIndex = cartItems.findIndex(
-      (cartItem) => cartItem.name === item.name
+      (cartItem) => cartItem.name === item.name && cartItem.size === item.size
     );
 
     if (itemIndex !== -1) {
-      // If the item already exists, update its quantity
+      // If the item already exists with the same name and size, update its quantity
       const updatedCartItems = [...cartItems];
       updatedCartItems[itemIndex].quantity += 1;
-      updatedCartItems[itemIndex].size = item?.size;
 
       setCartItems(updatedCartItems);
       setTotalPrice(totalPrice + item.price);
     } else {
-      // If the item doesn't exist, add it to the cart
+      // If the item doesn't exist with the same name and size, add it to the cart
       setCartItems([...cartItems, { ...item, quantity: 1 }]);
       setTotalPrice(totalPrice + item.price);
     }
@@ -211,7 +210,6 @@ function Product() {
                     name: product?.name,
                     price: Math.floor(product?.price),
                     size: size,
-                    picture: product?.picture,
                   })
                 }
                 sx={{

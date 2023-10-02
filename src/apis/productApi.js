@@ -8,10 +8,41 @@ const CREATE_PRODUCT_API = `${prefix}/create-product`;
 const UPDATE_PRODUCT_BY_ID_API = `${prefix}/update-product-by-id`;
 const DELETE_PRODUCT_BY_ID_API = `${prefix}/delete-product-by-id`;
 const GET_PRODUCT_BY_ID = `${prefix}/get-product-by-id`;
+const GET_ALL_PRODUCT_BY_ID = `${prefix}/get-all-product-by-id`;
+const SEARCH_PRODUCT = `${prefix}/search`;
 
 export const getAllProduct = async () => {
   try {
     const { data, status } = await axios.get(`${GET_ALL_PRODUCT_API}`);
+
+    if (status === 200) {
+      return data;
+    }
+  } catch (error) {
+    const err = error?.response?.data?.error;
+
+    // sweetAlertError(err);
+  }
+};
+
+export const SearchProduct = async (name) => {
+  try {
+    const { data, status } = await axios.post(`${SEARCH_PRODUCT}`, name);
+
+    if (status === 200) {
+      return data;
+    }
+  } catch (error) {
+    const err = error?.response?.data?.error;
+
+    // sweetAlertError(err);
+  }
+};
+export const getAllProductById = async (id) => {
+  try {
+    const { data, status } = await axios.post(`${GET_ALL_PRODUCT_BY_ID}`, {
+      id,
+    });
 
     if (status === 200) {
       return data;
@@ -78,6 +109,7 @@ export const updateProductById = async (body) => {
 
 export const deleteProductById = async (select) => {
   try {
+
     const { status } = await axios.post(`${DELETE_PRODUCT_BY_ID_API}`, select);
 
     if (status === 200) {

@@ -18,9 +18,12 @@ import * as Yup from "yup";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { getImageUrl } from "../../utils/utils";
 import { createOrder } from "../../apis/orderApi";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function PayModal({ setModalOpen, modalOpen, order, setOrder }) {
   const [file, setFile] = useState();
+  const navigate = useNavigate();
 
   const style = {
     position: "absolute",
@@ -122,7 +125,10 @@ function PayModal({ setModalOpen, modalOpen, order, setOrder }) {
                     disabled={!file}
                     onClick={() => {
                       createOrder(order).then((res) => {
-                        console.log(res?.data);
+                        localStorage.setItem("cartItems", "");
+                        localStorage.setItem("totalPrice", "");
+                        setModalOpen(false);
+                        navigate("/shop");
                       });
                     }}
                     variant="outlined"

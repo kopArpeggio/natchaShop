@@ -84,9 +84,8 @@ function PaymentViewModal({ setModalOpen, modalOpen, handleClose, order }) {
               rows={6}
               value={
                 order?.OrderDetails
-                  ? order?.OrderDetails?.map(
-                      (item, index) =>
-                        `${item?.Product?.name} ${item?.quantity} ชิ้น`
+                  ? order?.OrderDetails?.map((item, index) =>
+                      `${item?.Product?.name} ${item?.size} ${item?.quantity} ชิ้น`
                     ).join(", ")
                   : ""
               }

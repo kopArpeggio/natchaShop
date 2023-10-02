@@ -17,10 +17,12 @@ import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { getImageUrl } from "./utils/utils";
 import PayModal from "./Components/Modal/PayModal";
+import { getAllProductById } from "./apis/productApi";
 
 function Cart() {
   const [order, setOrder] = useState({ totalPrice: "" });
   const [modalOpen, setModalOpen] = useState(false);
+  const [product, setProduct] = useState([]);
 
   const [cartItems, setCartItems] = useState(
     JSON.parse(localStorage.getItem("cartItems")) || []
@@ -42,6 +44,17 @@ function Cart() {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
     console.log(cartItems);
     localStorage.setItem("totalPrice", totalPrice);
+
+    const productIdsArray = [];
+
+    for (let i = 0; i < cartItems.length; i++) {
+      const productId = cartItems[i].product_id;
+      productIdsArray.push(productId);
+    }
+
+    getAllProductById(productIdsArray).then((res) => {
+      setProduct(res?.data);
+    });
 
     setOrder({
       ...order,
@@ -83,8 +96,8 @@ function Cart() {
                             component="img"
                             height="200px"
                             image={
-                              item?.picture
-                                ? getImageUrl(item?.picture)
+                              product
+                                ? getImageUrl(product[index]?.picture)
                                 : "/assets/img/no-image.png"
                             }
                           />
@@ -108,9 +121,9 @@ function Cart() {
                               />
                             </Box>
                           </Box>
-                          <Box>รหัสสินค้า</Box>
-                          <Box>ขนาด</Box>
-                          <Box>ราคา</Box>
+                          <Box>รหัสสินค้า : {product[index]?.id}</Box>
+                          <Box>ขนาด : {item?.size}</Box>
+                          <Box>ราคา : {product[index]?.price}</Box>
                           <Box>จำนวนสินค้า</Box>
                           <Box
                             sx={{

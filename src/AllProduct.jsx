@@ -14,17 +14,27 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import ProductCard from "./Components/ProductCard";
 import { Link } from "react-scroll";
-import { getAllProduct } from "./apis/productApi";
+import { SearchProduct, getAllProduct } from "./apis/productApi";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 function AllProduct() {
   const [currentPage, setCurrentPage] = useState(1);
   const [product, setProduct] = useState([]);
 
+  const params = new URLSearchParams(window.location.pathname);
+
+  console.log("Search parameter from URL:", params?.get("shop"));
+
   useEffect(() => {
-    getAllProduct().then((res) => {
-      setProduct(res?.data);
-    });
-    // console.log(test);
+    if (!product) {
+      SearchProduct().then((res) => {
+        setProduct(res?.data);
+      });
+    } else {
+      getAllProduct().then((res) => {
+        setProduct(res?.data);
+      });
+    }
   }, []);
 
   var itemsPerPage = 8;
