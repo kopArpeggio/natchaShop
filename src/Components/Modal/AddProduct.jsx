@@ -116,7 +116,7 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
       >
         <Box sx={({ display: "flex", justifyContent: "center" }, style)}>
           <form onSubmit={formik?.handleSubmit} style={{ width: "100%" }}>
-            <h2>แก้ไขข้อมูลสินค้า</h2>
+            <h2>เพิ่มสินค้า</h2>
             <Box>
               <TextField
                 id="standard-basic"
