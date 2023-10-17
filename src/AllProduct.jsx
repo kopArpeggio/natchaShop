@@ -20,22 +20,32 @@ import { useLocation, useSearchParams } from "react-router-dom";
 function AllProduct() {
   const [currentPage, setCurrentPage] = useState(1);
   const [product, setProduct] = useState([]);
-
-  const params = new URLSearchParams(window.location.pathname);
-
-  console.log("Search parameter from URL:", params?.get("shop"));
+  const [searchProduct, setSearchProduct] = useState([]);
+  const [search, setSearch] = useState("");
+  const [test, setTest] = useState("");
+  const hi = new URLSearchParams(window.location.search);
 
   useEffect(() => {
-    if (!product) {
-      SearchProduct().then((res) => {
-        setProduct(res?.data);
-      });
-    } else {
-      getAllProduct().then((res) => {
-        setProduct(res?.data);
-      });
-    }
-  }, []);
+    const urlParams = new URLSearchParams(window.location.search);
+
+    setSearch(urlParams.get("search"));
+
+    const fetchProducts = async () => {
+      let productsData;
+
+      var allProduct;
+
+      if (search) {
+        allProduct = await getAllProduct(search);
+      } else {
+        allProduct = await getAllProduct();
+      }
+
+      setProduct(allProduct?.data);
+    };
+
+    fetchProducts();
+  }, [search, searchProduct, product]); // Only include 'search' in the dependency array
 
   var itemsPerPage = 8;
 

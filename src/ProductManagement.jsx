@@ -39,6 +39,7 @@ function ProductManagement() {
     quantity: "",
     id: "",
   });
+  const [productSize, setProductSize] = useState("");
 
   const currencyFormatter = new Intl.NumberFormat("en-US");
 
@@ -85,17 +86,17 @@ function ProductManagement() {
         return `${formattedValue} บาท`;
       },
     },
-    {
-      field: "quantity",
-      headerName: "จำนวน",
-      type: "number",
-      width: 90,
-      flex: 1,
-      valueFormatter: ({ value }) => {
-        const formattedValue = currencyFormatter.format(value);
-        return `${formattedValue}`;
-      },
-    },
+    // {
+    //   field: "quantity",
+    //   headerName: "จำนวน",
+    //   type: "number",
+    //   width: 90,
+    //   flex: 1,
+    //   valueFormatter: ({ value }) => {
+    //     const formattedValue = currencyFormatter.format(value);
+    //     return `${formattedValue}`;
+    //   },
+    // },
     {
       renderCell: (params) => (
         <div
@@ -121,6 +122,7 @@ function ProductManagement() {
             onClick={() => {
               getProductById(params?.row?.id).then((res) => {
                 setProduct(res?.data);
+                setProductSize(res?.size);
                 setModalUpdateOpen(true);
               });
             }}
@@ -163,6 +165,7 @@ function ProductManagement() {
           setModalOpen={setModalUpdateOpen}
           modalOpen={modalUpdateOpen}
           product={product}
+          productSize={productSize}
         />
 
         <DataGrid

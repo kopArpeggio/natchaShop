@@ -13,6 +13,7 @@ function Product() {
   const location = useLocation();
 
   const [product, setProduct] = useState("");
+  const [productSize, setProductSize] = useState("");
   const productId = location?.state && location?.state?.productId;
 
   const formattedPrice = new Intl.NumberFormat("en-US").format(product?.price);
@@ -27,6 +28,9 @@ function Product() {
   useEffect(() => {
     getProductById(productId).then((res) => {
       setProduct(res?.data);
+      console.log(res.data);
+      console.log(res.size);
+      setProductSize(res.size);
     });
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
     localStorage.setItem("totalPrice", totalPrice);
@@ -35,6 +39,7 @@ function Product() {
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
     setSize(event?.target?.value);
+    console.log(size);
   };
 
   const addItemToCart = (item) => {
@@ -172,9 +177,43 @@ function Product() {
                     backgroundColor: "black",
                   },
                 }}
+                value="x"
+              >
+                X
+              </ToggleButton>
+              <ToggleButton
+                sx={{
+                  marginRight: 2,
+                  width: "6vh",
+                  outlineWidth: "1px",
+                  outlineColor: "black",
+                  outlineStyle: "solid",
+                  color: "black",
+                  "&.Mui-selected, &.Mui-selected:hover": {
+                    color: "white",
+                    backgroundColor: "black",
+                  },
+                }}
                 value="xl"
               >
                 XL
+              </ToggleButton>
+              <ToggleButton
+                sx={{
+                  marginRight: 2,
+                  width: "6vh",
+                  outlineWidth: "1px",
+                  outlineColor: "black",
+                  outlineStyle: "solid",
+                  color: "black",
+                  "&.Mui-selected, &.Mui-selected:hover": {
+                    color: "white",
+                    backgroundColor: "black",
+                  },
+                }}
+                value="freeSize"
+              >
+                FS
               </ToggleButton>
             </ToggleButtonGroup>
 
@@ -196,20 +235,34 @@ function Product() {
                   borderColor: "black",
                 }}
               >
-                จำนวนสินค้า : {product?.quantity}
+                จำนวนสินค้า :{" "}
+                {size === "s"
+                  ? productSize[0]?.stock
+                  : size === "m"
+                  ? productSize[1]?.stock
+                  : size === "l"
+                  ? productSize[2]?.stock
+                  : size === "x"
+                  ? productSize[3]?.stock
+                  : size === "xl"
+                  ? productSize[4]?.stock
+                  : size === "freeSize"
+                  ? productSize[5]?.stock
+                  : 0}
               </Button>
             </Box>
             <Box>
               <Button
-                disabled={size == ""}
                 variant="contained"
                 color="success"
+                disabled={size == 0}
                 onClick={() =>
                   addItemToCart({
                     product_id: product?.id,
                     name: product?.name,
                     price: Math.floor(product?.price),
                     size: size,
+                    size_id: product?.Size?.id,
                   })
                 }
                 sx={{

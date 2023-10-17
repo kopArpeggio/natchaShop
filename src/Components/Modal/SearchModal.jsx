@@ -65,7 +65,10 @@ function SearchModal({ modalOpen, setModalOpen }) {
                     sx={{ cursor: "pointer" }}
                     onClick={() => {
                       setModalOpen(false);
-                      navigate({ pathname: "/shop", search: search });
+                      navigate({
+                        pathname: "/shop",
+                        search: `?search=${search}`,
+                      });
                     }}
                   />
                 </InputAdornment>

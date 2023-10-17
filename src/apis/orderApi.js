@@ -6,6 +6,7 @@ const prefix = "order";
 const CREATE_ORDER_API = `${prefix}/create-order`;
 const GET_ORDER_API = `${prefix}/get-order`;
 const GET_ORDER_BY_ID_API = `${prefix}/get-order-by-id`;
+const UPDATE_ORDER_BY_ID_API = `${prefix}/update-order-by-id`;
 
 export const getOrder = async () => {
   try {
@@ -17,6 +18,7 @@ export const getOrder = async () => {
     }
   } catch (error) {
     const err = error?.response?.data?.error;
+    console.log(err);
   }
 };
 
@@ -32,13 +34,28 @@ export const getOrderById = async (id) => {
   }
 };
 
+export const updateOrderById = async (value) => {
+  try {
+    const { status, data } = await axios.put(
+      `${UPDATE_ORDER_BY_ID_API}`,
+      value
+    );
+
+    if (status === 200) {
+      return data;
+    }
+  } catch (error) {
+    const err = error?.response?.data?.error;
+    console.log(err);
+  }
+};
+
 export const createOrder = async (body) => {
   try {
-    console.log(body);
     const form = new FormData();
     form.append("picture", body?.file);
 
-    const { status } = await axios.post(
+    const { status, data } = await axios.post(
       `${CREATE_ORDER_API}`,
       { ...body, form },
       {
@@ -52,8 +69,11 @@ export const createOrder = async (body) => {
     if (status === 201) {
       return true;
     }
+
+    console.log(data);
   } catch (error) {
     const err = error?.response?.data?.error;
+    console.log(err);
 
     // sweetAlertError(err);
   }

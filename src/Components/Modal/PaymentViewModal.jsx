@@ -2,6 +2,9 @@ import {
   Backdrop,
   Box,
   Button,
+  Card,
+  CardMedia,
+  Grid,
   Modal,
   TextField,
   Typography,
@@ -12,8 +15,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { getImageUrl } from "../../utils/utils";
+import { updateOrderById } from "../../apis/orderApi";
 
 function PaymentViewModal({ setModalOpen, modalOpen, handleClose, order }) {
+  const [changeOrder, setChangeOrder] = useState(order);
+
+  console.log(order);
+
+  const onSubmit = (value) => {
+    updateOrderById(value);
+  };
+
   const style = {
     position: "absolute",
     display: "grid",
@@ -84,8 +96,9 @@ function PaymentViewModal({ setModalOpen, modalOpen, handleClose, order }) {
               rows={6}
               value={
                 order?.OrderDetails
-                  ? order?.OrderDetails?.map((item, index) =>
-                      `${item?.Product?.name} ${item?.size} ${item?.quantity} ชิ้น`
+                  ? order?.OrderDetails?.map(
+                      (item, index) =>
+                        `${item?.Product?.name} ${item?.size} ${item?.quantity} ชิ้น`
                     ).join(", ")
                   : ""
               }
@@ -102,14 +115,23 @@ function PaymentViewModal({ setModalOpen, modalOpen, handleClose, order }) {
             }}
           >
             <Typography>สลิปโอนเลิน :</Typography>
-            <img
-              src={
-                order?.slipPicture
-                  ? getImageUrl(order?.slipPicture)
-                  : "/assets/img/no-image.png"
-              }
-              style={{ width: 350 }}
-            />
+
+            <Card>
+              <CardMedia
+                component="img"
+                alt="Product Image"
+                height="320"
+                sx={{ cursor: "pointer" }}
+                onClick={() => {
+                  window.open(getImageUrl(order?.slipPicture));
+                }}
+                image={
+                  order?.slipPicture
+                    ? getImageUrl(order?.slipPicture)
+                    : "/assets/img/no-image.png"
+                } // Replace with the actual image URL
+              />
+            </Card>
           </Box>
           <Box>
             <TextField
@@ -122,6 +144,44 @@ function PaymentViewModal({ setModalOpen, modalOpen, handleClose, order }) {
               sx={{ margin: "5px", width: "100%", mt: 3 }}
               name="name"
             />
+          </Box>
+          <Box>
+            <Grid container rowSpacing={1}>
+              <Grid item xs={6}>
+                <TextField
+                  aria-readonly
+                  label="Tracking Number"
+                  defaultValue={order?.shippingTrack}
+                  onChange={(e) => {
+                    setChangeOrder({
+                      ...changeOrder,
+                      shippingTrack: e?.target?.value,
+                      id: order?.id,
+                    });
+                    console.log(changeOrder);
+                  }}
+                  sx={{ margin: "5px", width: "100%", mt: 1 }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Button
+                  sx={{
+                    fontSize: "2vh",
+                    "&:hover": { backgroundColor: "white", color: "black" },
+                    margin: "5px",
+                    width: "100%",
+                    height: "8vh",
+                    mt: 1,
+                  }}
+                  variant="contained"
+                  onClick={() => {
+                    onSubmit(changeOrder);
+                  }}
+                >
+                  อัพเดท
+                </Button>
+              </Grid>
+            </Grid>
           </Box>
           <Box sx={{ display: "grid", justifyContent: "center" }}>
             <Button

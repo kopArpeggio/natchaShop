@@ -6,7 +6,16 @@ import * as Yup from "yup";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { getImageUrl } from "../../utils/utils";
 
-function UpdateProduct({ setModalOpen, modalOpen, handleClose, product }) {
+function UpdateProduct({
+  setModalOpen,
+  modalOpen,
+  handleClose,
+  product,
+  productSize,
+}) {
+  console.log(product);
+  console.log(productSize);
+
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("โปรดกรอกชื่อสินค้า"),
     price: Yup.number()
@@ -14,8 +23,27 @@ function UpdateProduct({ setModalOpen, modalOpen, handleClose, product }) {
       .positive("ต้องไม่ติดลบ")
       .integer("ต้องเป็นตัวเลขเท่านั้น")
       .typeError("ต้องเป็นตัวเลขเท่านั้น"),
-    quantity: Yup.number()
-      .required("โปรดกรอกจำนวนสินค้า")
+    s: Yup.number()
+      .positive("ต้องไม่ติดลบ")
+      .integer("ต้องเป็นตัวเลขเท่านั้น")
+      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
+    m: Yup.number()
+      .positive("ต้องไม่ติดลบ")
+      .integer("ต้องเป็นตัวเลขเท่านั้น")
+      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
+    l: Yup.number()
+      .positive("ต้องไม่ติดลบ")
+      .integer("ต้องเป็นตัวเลขเท่านั้น")
+      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
+    x: Yup.number()
+      .positive("ต้องไม่ติดลบ")
+      .integer("ต้องเป็นตัวเลขเท่านั้น")
+      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
+    xl: Yup.number()
+      .positive("ต้องไม่ติดลบ")
+      .integer("ต้องเป็นตัวเลขเท่านั้น")
+      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
+    freeSize: Yup.number()
       .positive("ต้องไม่ติดลบ")
       .integer("ต้องเป็นตัวเลขเท่านั้น")
       .typeError("ต้องเป็นตัวเลขเท่านั้น"),
@@ -30,9 +58,23 @@ function UpdateProduct({ setModalOpen, modalOpen, handleClose, product }) {
       price: product ? product?.price : "",
       quantity: product ? product?.quantity : "",
       id: product ? product?.id : "",
+      sizeId: product ? product?.Size?.id : "",
+      s: product ? product?.Size?.s : "",
+      m: product ? product?.Size?.m : "",
+      l: product ? product?.Size?.l : "",
+      x: product ? product?.Size?.x : "",
+      xl: product ? product?.Size?.xl : "",
+      freeSize: product ? product?.Size?.freeSize : "",
+      stock1: productSize[0]?.stock,
+      stock2: productSize[1]?.stock,
+      stock3: productSize[2]?.stock,
+      stock4: productSize[3]?.stock,
+      stock5: productSize[4]?.stock,
+      stock6: productSize[5]?.stock,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      // values.productSize = productSize;
       updateProductById(values).then(() => {
         setFile("");
         handleClose(); // Close the modal after submission
@@ -60,8 +102,8 @@ function UpdateProduct({ setModalOpen, modalOpen, handleClose, product }) {
       <Modal
         open={modalOpen}
         onClose={() => {
-          formik.resetForm();
           setModalOpen(false);
+          formik.resetForm();
           setFile("");
         }}
         aria-labelledby="simple-modal-title"
@@ -82,7 +124,7 @@ function UpdateProduct({ setModalOpen, modalOpen, handleClose, product }) {
                 id="standard-basic"
                 label="ชื่อสินค้า"
                 sx={{ margin: "5px", width: "100%" }}
-                value={product?.name || formik.values.name || ""}
+                defaultValue={product?.name || formik.values.name || ""}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.name && Boolean(formik.errors.name)}
@@ -105,7 +147,7 @@ function UpdateProduct({ setModalOpen, modalOpen, handleClose, product }) {
               />
             </Box>
 
-            <Box>
+            {/* <Box>
               <TextField
                 value={formik?.values?.quantity || product?.quantity || ""}
                 onChange={formik.handleChange}
@@ -119,6 +161,104 @@ function UpdateProduct({ setModalOpen, modalOpen, handleClose, product }) {
                 id="standard-basic"
                 label="จำนวนสินค้า"
               />
+            </Box> */}
+
+            <Box
+              component="form"
+              sx={{
+                "& .MuiTextField-root": { m: 1, width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <div style={{ display: "flex" }}>
+                <TextField
+                  id="filled-multiline-flexible"
+                  label="S"
+                  type="number"
+                  variant="filled"
+                  name="stock1"
+                  defaultValue={
+                    formik?.values?.stock1 || productSize[0]?.stock || "0"
+                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.s && Boolean(formik.errors.s)}
+                  helperText={formik.touched.s && formik.errors.s}
+                />
+                <TextField
+                  id="filled-textarea"
+                  label="M"
+                  type="number"
+                  variant="filled"
+                  name="stock2"
+                  defaultValue={
+                    formik?.values?.stock2 || productSize[1]?.stock || "0"
+                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.m && Boolean(formik.errors.m)}
+                  helperText={formik.touched.m && formik.errors.m}
+                />
+                <TextField
+                  id="filled-multiline-static"
+                  label="L"
+                  type="number"
+                  variant="filled"
+                  name="stock3"
+                  defaultValue={
+                    formik?.values?.stock3 || productSize[2]?.stock || "0"
+                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.l && Boolean(formik.errors.l)}
+                  helperText={formik.touched.l && formik.errors.l}
+                />
+                <TextField
+                  id="filled-multiline-static"
+                  label="X"
+                  type="number"
+                  variant="filled"
+                  name="stock4"
+                  defaultValue={
+                    formik?.values?.stock4 || productSize[3]?.stock || "0"
+                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.size && Boolean(formik.errors.size)}
+                  helperText={formik.touched.size && formik.errors.size}
+                />
+                <TextField
+                  id="filled-multiline-static"
+                  label="XL"
+                  type="number"
+                  variant="filled"
+                  name="stock5"
+                  defaultValue={
+                    formik?.values?.stock5 || productSize[4]?.stock || "0"
+                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.xl && Boolean(formik.errors.xl)}
+                  helperText={formik.touched.xl && formik.errors.xl}
+                />
+                <TextField
+                  id="filled-multiline-static"
+                  label="FS"
+                  type="number"
+                  variant="filled"
+                  name="stock6"
+                  defaultValue={
+                    formik?.values?.stock6 || productSize[5]?.stock || "0"
+                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.freeSize && Boolean(formik.errors.freeSize)
+                  }
+                  helperText={formik.touched.freeSize && formik.errors.freeSize}
+                />
+              </div>
             </Box>
 
             <Box
@@ -196,6 +336,8 @@ function UpdateProduct({ setModalOpen, modalOpen, handleClose, product }) {
                 variant="contained"
                 onClick={() => {
                   setModalOpen(false);
+                  formik.resetForm();
+                  setFile("");
                 }}
               >
                 ปิด

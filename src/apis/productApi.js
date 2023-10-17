@@ -11,9 +11,12 @@ const GET_PRODUCT_BY_ID = `${prefix}/get-product-by-id`;
 const GET_ALL_PRODUCT_BY_ID = `${prefix}/get-all-product-by-id`;
 const SEARCH_PRODUCT = `${prefix}/search`;
 
-export const getAllProduct = async () => {
+export const getAllProduct = async (search) => {
   try {
-    const { data, status } = await axios.get(`${GET_ALL_PRODUCT_API}`);
+
+    const { data, status } = await axios.get(
+      `${GET_ALL_PRODUCT_API}/${search}`
+    );
 
     if (status === 200) {
       return data;
@@ -27,7 +30,7 @@ export const getAllProduct = async () => {
 
 export const SearchProduct = async (name) => {
   try {
-    const { data, status } = await axios.post(`${SEARCH_PRODUCT}`, name);
+    const { data, status } = await axios.post(`${SEARCH_PRODUCT}`, { name });
 
     if (status === 200) {
       return data;
@@ -38,6 +41,7 @@ export const SearchProduct = async (name) => {
     // sweetAlertError(err);
   }
 };
+
 export const getAllProductById = async (id) => {
   try {
     const { data, status } = await axios.post(`${GET_ALL_PRODUCT_BY_ID}`, {
@@ -82,6 +86,7 @@ export const createProduct = async (body) => {
 };
 
 export const updateProductById = async (body) => {
+  console.log(body);
   try {
     const form = new FormData();
     form.append("picture", body?.picture);
@@ -102,6 +107,7 @@ export const updateProductById = async (body) => {
     }
   } catch (error) {
     const err = error?.response?.data?.error;
+    console.log(err);
 
     // sweetAlertError(err);
   }
@@ -109,7 +115,6 @@ export const updateProductById = async (body) => {
 
 export const deleteProductById = async (select) => {
   try {
-
     const { status } = await axios.post(`${DELETE_PRODUCT_BY_ID_API}`, select);
 
     if (status === 200) {
@@ -131,5 +136,6 @@ export const getProductById = async (id) => {
     }
   } catch (error) {
     const err = error?.response?.data?.error;
+    console.log(err);
   }
 };

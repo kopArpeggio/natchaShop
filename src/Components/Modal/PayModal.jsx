@@ -125,8 +125,8 @@ function PayModal({ setModalOpen, modalOpen, order, setOrder }) {
                     disabled={!file}
                     onClick={() => {
                       createOrder(order).then((res) => {
-                        localStorage.setItem("cartItems", "");
-                        localStorage.setItem("totalPrice", "");
+                        localStorage.setItem("cartItems", "[]");
+                        localStorage.setItem("totalPrice", 0);
                         setModalOpen(false);
                         navigate("/shop");
                       });
