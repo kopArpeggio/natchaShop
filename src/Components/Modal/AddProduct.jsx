@@ -23,36 +23,7 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
       .positive("ต้องไม่ติดลบ")
       .integer("ต้องเป็นตัวเลขเท่านั้น")
       .typeError("ต้องเป็นตัวเลขเท่านั้น"),
-    s: Yup.number()
-      .required("โปรดกรอกจำนวนสินค้า")
-      .positive("ต้องไม่ติดลบ")
-      .integer("ต้องเป็นตัวเลขเท่านั้น")
-      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
-    m: Yup.number()
-      .required("โปรดกรอกจำนวนสินค้า")
-      .positive("ต้องไม่ติดลบ")
-      .integer("ต้องเป็นตัวเลขเท่านั้น")
-      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
-    l: Yup.number()
-      .required("โปรดกรอกจำนวนสินค้า")
-      .positive("ต้องไม่ติดลบ")
-      .integer("ต้องเป็นตัวเลขเท่านั้น")
-      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
-    x: Yup.number()
-      .required("โปรดกรอกจำนวนสินค้า")
-      .positive("ต้องไม่ติดลบ")
-      .integer("ต้องเป็นตัวเลขเท่านั้น")
-      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
-    xl: Yup.number()
-      .required("โปรดกรอกจำนวนสินค้า")
-      .positive("ต้องไม่ติดลบ")
-      .integer("ต้องเป็นตัวเลขเท่านั้น")
-      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
-    freeSize: Yup.number()
-      .required("โปรดกรอกจำนวนสินค้า")
-      .positive("ต้องไม่ติดลบ")
-      .integer("ต้องเป็นตัวเลขเท่านั้น")
-      .typeError("ต้องเป็นตัวเลขเท่านั้น"),
+
   });
 
   const formik = useFormik({
