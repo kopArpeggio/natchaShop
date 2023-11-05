@@ -20,10 +20,14 @@ import { getImageUrl } from "../../utils/utils";
 import { createOrder } from "../../apis/orderApi";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { SuccesfulALert } from "../Alert";
+import ReactDOM from "react-dom";
+import Countdown from "react-countdown";
 
 function PayModal({ setModalOpen, modalOpen, order, setOrder }) {
   const [file, setFile] = useState();
   const navigate = useNavigate();
+  const time = 300000;
 
   const style = {
     position: "absolute",
@@ -37,6 +41,27 @@ function PayModal({ setModalOpen, modalOpen, order, setOrder }) {
     boxShadow: 24,
     p: 4,
     borderRadius: "2vh",
+  };
+
+  const Completionist = () => {
+    localStorage.setItem("cartItems", "[]");
+    localStorage.setItem("totalPrice", 0);
+    setModalOpen(false);
+    navigate("/shop");
+  };
+
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      return <Completionist />;
+    } else {
+      // Render a countdown
+      return (
+        <span>
+          {hours}:{minutes}:{seconds}
+        </span>
+      );
+    }
   };
 
   return (
@@ -60,7 +85,10 @@ function PayModal({ setModalOpen, modalOpen, order, setOrder }) {
       >
         <div>
           <Box sx={style}>
-            <h2>โอนยอดภายใน ระยะเวลา 2 ชั้วโมง</h2>
+            <h2>ชำระภายใน 5 นาที</h2>
+            <h4>
+              <Countdown date={Date.now() + time} renderer={renderer} />
+            </h4>
             <Card sx={{ width: "100%" }}>
               <CardContent>
                 <CardMedia
@@ -129,6 +157,7 @@ function PayModal({ setModalOpen, modalOpen, order, setOrder }) {
                         localStorage.setItem("totalPrice", 0);
                         setModalOpen(false);
                         navigate("/shop");
+                        SuccesfulALert("สั่งซื้อสำเร็จ !");
                       });
                     }}
                     variant="outlined"

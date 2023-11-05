@@ -18,7 +18,7 @@ const MemberRoutes = ({ token }) => {
     <Outlet />
   ) : (
     // leave()
-    navigate(-1)
+    navigate("/shop")
   );
 };
 

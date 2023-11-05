@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { getImageUrl } from "../../utils/utils";
+import { SuccesfulALert } from "../Alert";
 
 function UpdateProduct({
   setModalOpen,
@@ -13,9 +14,6 @@ function UpdateProduct({
   product,
   productSize,
 }) {
-  console.log(product);
-  console.log(productSize);
-
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("โปรดกรอกชื่อสินค้า"),
     price: Yup.number()
@@ -76,6 +74,7 @@ function UpdateProduct({
     onSubmit: (values) => {
       // values.productSize = productSize;
       updateProductById(values).then(() => {
+        SuccesfulALert("อัพเดทสินค้าสำเร็จ");
         setFile("");
         handleClose(); // Close the modal after submission
       });

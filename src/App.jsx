@@ -18,6 +18,9 @@ import PaymentView from "./PaymentView";
 import MemberRoutes from "./Components/PrivateRoutes/MemberRoutes";
 import AdminRoutes from "./Components/PrivateRoutes/AdminRoutes";
 import NotFound from "./NotFound";
+import OrderViewUser from "./OrderViewUser";
+import TrackOrder from "./TrackOrder";
+import Home from "./Home";
 
 function App() {
   const theme = createTheme({
@@ -43,6 +46,7 @@ function App() {
             {!isAuthorized ? (
               <>
                 <Route path="/" element={<Login />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/shop" element={<AllProduct />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/product" element={<Product />} />
@@ -51,7 +55,8 @@ function App() {
             ) : (
               <>
                 <Route path="*" element={<NotFound />} />
-                <Route path="/" element={<AllProduct />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/shop" element={<AllProduct />} />
               </>
             )}
 
@@ -59,6 +64,9 @@ function App() {
               <Route element={<MemberRoutes />}>
                 <Route path="*" element={<NotFound />} />
 
+                <Route path="/home" element={<Home />} />
+                <Route path="/tracking" element={<TrackOrder />} />
+                <Route path="/view-order" element={<OrderViewUser />} />
                 <Route path="/shop" element={<AllProduct />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/login" element={<Login />} />

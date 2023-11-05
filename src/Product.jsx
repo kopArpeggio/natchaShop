@@ -6,6 +6,7 @@ import Divider from "@mui/material/Divider";
 import { useLocation } from "react-router-dom";
 import { getProductById } from "./apis/productApi";
 import { getImageUrl } from "./utils/utils";
+import { SuccesfulALert } from "./Components/Alert";
 
 function Product() {
   const [alignment, setAlignment] = React.useState("web");
@@ -59,13 +60,8 @@ function Product() {
       setCartItems([...cartItems, { ...item, quantity: 1 }]);
       setTotalPrice(totalPrice + item.price);
     }
-  };
 
-  const removeItemFromCart = (index) => {
-    const updatedCartItems = [...cartItems];
-    const removedItem = updatedCartItems.splice(index, 1)[0];
-    setCartItems(updatedCartItems);
-    setTotalPrice(totalPrice - removedItem.price);
+    SuccesfulALert("เพิ่มสินค้าลงตะกร้า")
   };
 
   return (

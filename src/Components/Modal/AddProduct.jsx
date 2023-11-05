@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { createProduct } from "../../apis/productApi";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { SuccesfulALert } from "../Alert";
 
 function AddProduct({ modalOpen, setModalOpen, handleClose }) {
   const [file, setFile] = useState("");
@@ -23,7 +24,6 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
       .positive("ต้องไม่ติดลบ")
       .integer("ต้องเป็นตัวเลขเท่านั้น")
       .typeError("ต้องเป็นตัวเลขเท่านั้น"),
-
   });
 
   const formik = useFormik({
@@ -43,6 +43,7 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
       console.log("test");
 
       createProduct(values).then(() => {
+        SuccesfulALert("เพิ่มสินค้าสำเร็จ");
         setValues(formik.initialValues);
         setFile("");
 

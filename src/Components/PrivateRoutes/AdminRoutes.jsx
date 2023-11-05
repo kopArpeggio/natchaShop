@@ -18,7 +18,7 @@ const AdminRoutes = ({ token }) => {
     <Outlet />
   ) : (
     // leave()
-    navigate(-1)
+    navigate('/shop')
   );
 };
 

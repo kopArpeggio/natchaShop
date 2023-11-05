@@ -13,6 +13,7 @@ import RegisterModal from "./Components/Modal/RegisterModal";
 import * as Yup from "yup";
 import { loginMember } from "./apis/rootApi";
 import { useFormik } from "formik";
+import { ToastContainer, toast } from "react-toastify";
 
 const cardContainerStyle = {
   display: "flex",
@@ -22,6 +23,30 @@ const cardContainerStyle = {
   height: "100%",
 };
 function Login() {
+  const LoginSuccessAlert = () =>
+    toast.success("Authentication Successful !", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const LoginFail = () =>
+    toast.error("Wrong Password or Username !", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("โปรดกรอก Username"),
     password: Yup.string().required("โปรดกรอก Password"),
@@ -38,9 +63,12 @@ function Login() {
       loginMember(values).then((user) => {
         if (user?.accessToken) {
           localStorage.setItem("token", user?.accessToken);
-          window.location.reload();
-        }else{
-          "ALERT"
+          LoginSuccessAlert();
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          LoginFail();
         }
       });
     },

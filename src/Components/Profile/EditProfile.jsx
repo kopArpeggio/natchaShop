@@ -4,6 +4,7 @@ import React from "react";
 import * as Yup from "yup";
 import CustomButton from "../CustomButton";
 import { updateMemberById } from "../../apis/memberApi";
+import { SuccesfulALert } from "../Alert";
 
 function EditProfile({ member, getUser }) {
   const validationSchema = Yup.object().shape({
@@ -25,12 +26,8 @@ function EditProfile({ member, getUser }) {
       updateMemberById(values).then((res) => {
         getUser();
         console.log(res?.data);
-        getUser;
+        SuccesfulALert("Update Profile Succesful !");
       });
-      //   updatememberById(values).then(() => {
-      //     handleClose(); // Close the modal after submission
-      //     setFile("");
-      //   });
     },
   });
 

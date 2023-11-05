@@ -1,9 +1,11 @@
 import axios from "axios";
+import { FailALert } from "../Components/Alert";
 // import { sweetAlertError } from "../swal2/swal2";
 
 const prefix = "product";
 
 const GET_ALL_PRODUCT_API = `${prefix}/get-all-product`;
+const GET_NEW_PRODUCT_API = `${prefix}/get-new-product`;
 const CREATE_PRODUCT_API = `${prefix}/create-product`;
 const UPDATE_PRODUCT_BY_ID_API = `${prefix}/update-product-by-id`;
 const DELETE_PRODUCT_BY_ID_API = `${prefix}/delete-product-by-id`;
@@ -13,10 +15,22 @@ const SEARCH_PRODUCT = `${prefix}/search`;
 
 export const getAllProduct = async (search) => {
   try {
-
     const { data, status } = await axios.get(
       `${GET_ALL_PRODUCT_API}/${search}`
     );
+
+    if (status === 200) {
+      return data;
+    }
+  } catch (error) {
+    const err = error?.response?.data?.error;
+
+    // sweetAlertError(err);
+  }
+};
+export const getNewProduct = async () => {
+  try {
+    const { data, status } = await axios.get(`${GET_NEW_PRODUCT_API}`);
 
     if (status === 200) {
       return data;
@@ -79,6 +93,7 @@ export const createProduct = async (body) => {
     }
   } catch (error) {
     const err = error?.response?.data?.error;
+    FailALert("เกิดข้อผิดพลาด");
     console.log(err);
 
     // sweetAlertError(err);
@@ -86,7 +101,6 @@ export const createProduct = async (body) => {
 };
 
 export const updateProductById = async (body) => {
-  console.log(body);
   try {
     const form = new FormData();
     form.append("picture", body?.picture);
@@ -108,6 +122,7 @@ export const updateProductById = async (body) => {
   } catch (error) {
     const err = error?.response?.data?.error;
     console.log(err);
+    FailALert("อัพเดทไม่สำเร็จเกิดข้อผิดพลาด");
 
     // sweetAlertError(err);
   }

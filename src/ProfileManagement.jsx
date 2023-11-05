@@ -12,6 +12,7 @@ import Sidebar from "./Components/Sidebar";
 import ViewProfile from "./Components/Profile/ViewProfile";
 import { userData } from "./apis/rootApi";
 import EditProfile from "./Components/Profile/EditProfile";
+import OrderViewUser from "./OrderViewUser";
 
 const drawerWidth = 240;
 
@@ -87,9 +88,11 @@ export default function ProfileManagement(props) {
           }}
         >
           {component == true ? (
-            <EditProfile member={member} getUser={getUser}/>
-          ) : (
+            <EditProfile member={member} getUser={getUser} />
+          ) : component == false ? (
             <ViewProfile member={member} getUser={getUser} />
+          ) : (
+            <OrderViewUser member={member} />
           )}
         </Box>
       </Box>

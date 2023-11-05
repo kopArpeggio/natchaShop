@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { userData } from "../apis/rootApi";
 import SearchModal from "./Modal/SearchModal";
+import AllInboxIcon from "@mui/icons-material/AllInbox";
 
 const pages = ["NPSHOP"];
 
@@ -24,7 +25,7 @@ function Navbar() {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-    navigate("/shop");
+    navigate("/home");
   };
 
   const handleCloseUserMenu = () => {
@@ -67,6 +68,7 @@ function Navbar() {
           <SearchModal setModalOpen={setOpenModal} modalOpen={openModal} />
           <Box
             sx={{
+              whiteSpace: "nowrap",
               flexGrow: { md: 0, xs: 1 },
               display: { xs: "flex", md: "flex" },
               justifyContent: "center",
@@ -142,6 +144,8 @@ function Navbar() {
                 onClick={handleCloseNavMenu}
                 sx={{
                   color: "white",
+                  fontSize: "2vh",
+                  fontWeight: "bold",
                   backgroundColor: "black",
                   display: "block",
                   padding: "25px 58px 25px 58px",
@@ -185,6 +189,24 @@ function Navbar() {
                 cursor: "pointer",
               }}
             />
+
+            {isAuthorized ? (
+              <AllInboxIcon
+                onClick={() => {
+                  !isAuthorized ? navigate("/") : navigate("/tracking");
+                }}
+                sx={{
+                  fontSize: "5vh",
+                  backgroundColor: "white",
+                  color: "black",
+                  borderRadius: "1vh",
+                  cursor: "pointer",
+                }}
+              />
+            ) : (
+              ""
+            )}
+
             <PersonOutlineOutlinedIcon
               // onClick={() => navigate("/profile")}
               onClick={() => {

@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { registerMember } from "../../apis/memberApi";
+import { SuccesfulALert } from "../Alert";
 
 function RegisterModal({ modalOpen, setModalOpen }) {
   const validationSchema = Yup.object().shape({
@@ -44,7 +45,7 @@ function RegisterModal({ modalOpen, setModalOpen }) {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       registerMember(values).then((res) => {
-        console.log(res?.data);
+        SuccesfulALert("สมัครสมาชิกสำเร็จ")
         formik.resetForm();
         setModalOpen(false);
       });

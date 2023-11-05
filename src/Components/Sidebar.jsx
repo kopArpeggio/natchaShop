@@ -12,6 +12,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import PersonIcon from "@mui/icons-material/Person";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 import React from "react";
 
@@ -49,6 +50,18 @@ function Sidebar({ setComponent }) {
               <PersonIcon />
             </ListItemIcon>
             <ListItemText primary={"บัญชี"} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
+              setComponent("order");
+            }}
+          >
+            <ListItemIcon>
+              <FormatListBulletedIcon />
+            </ListItemIcon>
+            <ListItemText primary={"รายการสั่งซื้อ"} />
           </ListItemButton>
         </ListItem>
       </List>

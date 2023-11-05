@@ -57,8 +57,11 @@ function AllProduct() {
         <Typography>เสื้อยืด(แขนสั้น)</Typography>
         <Grid container spacing={2}>
           {product
-            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-            .map((item, index) => (
+            ?.slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage
+            )
+            ?.map((item, index) => (
               <Grid item key={index} xs={3}>
                 <ProductCard product={item} />
               </Grid>

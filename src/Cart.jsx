@@ -42,7 +42,6 @@ function Cart() {
 
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    console.log(cartItems);
     localStorage.setItem("totalPrice", totalPrice);
 
     const productIdsArray = [];
@@ -206,7 +205,7 @@ function Cart() {
                   console.log(order);
                   setModalOpen(true);
                 }}
-                disabled={!isAuthorized}
+                disabled={!isAuthorized || cartItems?.length <= 0}
                 sx={{
                   mt: 5,
                   padding: "3vh 0px 3vh 0px",
