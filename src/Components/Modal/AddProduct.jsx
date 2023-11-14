@@ -162,7 +162,7 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
                   error={formik.touched.l && Boolean(formik.errors.l)}
                   helperText={formik.touched.l && formik.errors.l}
                 />
-                <TextField
+                {/* <TextField
                   id="filled-multiline-static"
                   label="X"
                   type="number"
@@ -173,7 +173,7 @@ function AddProduct({ modalOpen, setModalOpen, handleClose }) {
                   onBlur={formik.handleBlur}
                   error={formik.touched.size && Boolean(formik.errors.size)}
                   helperText={formik.touched.size && formik.errors.size}
-                />
+                /> */}
                 <TextField
                   id="filled-multiline-static"
                   label="XL"

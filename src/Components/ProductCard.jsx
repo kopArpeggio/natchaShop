@@ -13,10 +13,15 @@ import { getImageUrl } from "../utils/utils";
 import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
+  const isAuthorized = localStorage.getItem("token");
+
   return (
     <div>
       {" "}
-      <Link to={`/product`} state={{ productId: product?.id }}>
+      <Link
+        to={isAuthorized ? `/product` : `/login`}
+        state={{ productId: product?.id }}
+      >
         <Card sx={{ maxWidth: 345 }}>
           <CardMedia
             component="img"

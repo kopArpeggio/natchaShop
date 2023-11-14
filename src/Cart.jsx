@@ -13,11 +13,13 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { getImageUrl } from "./utils/utils";
 import PayModal from "./Components/Modal/PayModal";
 import { getAllProductById } from "./apis/productApi";
+import { FailALert } from "./Components/Alert";
 
 function Cart() {
   const [order, setOrder] = useState({ totalPrice: "" });
@@ -40,6 +42,8 @@ function Cart() {
     setTotalPrice(totalPrice - removedItem.price);
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
     localStorage.setItem("totalPrice", totalPrice);
@@ -49,6 +53,10 @@ function Cart() {
     for (let i = 0; i < cartItems.length; i++) {
       const productId = cartItems[i].product_id;
       productIdsArray.push(productId);
+    }
+
+    if (!isAuthorized) {
+      navigate("/login");
     }
 
     getAllProductById(productIdsArray).then((res) => {

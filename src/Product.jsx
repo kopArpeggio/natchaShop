@@ -160,7 +160,7 @@ function Product() {
               >
                 L
               </ToggleButton>
-              <ToggleButton
+              {/* <ToggleButton
                 sx={{
                   marginRight: 2,
                   width: "6vh",
@@ -176,7 +176,7 @@ function Product() {
                 value="x"
               >
                 X
-              </ToggleButton>
+              </ToggleButton> */}
               <ToggleButton
                 sx={{
                   marginRight: 2,

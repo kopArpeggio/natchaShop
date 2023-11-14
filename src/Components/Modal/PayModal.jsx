@@ -89,6 +89,19 @@ function PayModal({ setModalOpen, modalOpen, order, setOrder }) {
             <h4>
               <Countdown date={Date.now() + time} renderer={renderer} />
             </h4>
+            <Typography sx={{ fontSize: "2.2vh" }}>
+              ถ้าโอนยอดสำเสร็จ สามารถตรวจสอบเลขพัสดุ
+            </Typography>
+            <Typography sx={{ fontSize: "2.2vh" }}>
+              หลังจากโอนเงินในวันถัดไป
+            </Typography>
+            <Typography></Typography>
+            <Typography sx={{ fontSize: "2.2vh" }}>
+              จะส่งเลขพัสดุได้เวลา 16.00 -17.00 น.
+            </Typography>
+            <Typography sx={{ fontSize: "2.2vh" }}>
+              ตัดรอบส่ง เวลา 15.00 น. ของทุกวัน
+            </Typography>
             <Card sx={{ width: "100%" }}>
               <CardContent>
                 <CardMedia

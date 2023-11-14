@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { userData } from "../apis/rootApi";
 import SearchModal from "./Modal/SearchModal";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
+import { FailALert } from "./Alert";
 
 const pages = ["NPSHOP"];
 
@@ -39,6 +40,11 @@ function Navbar() {
       });
     }
   }, []);
+
+  const exit = () => {
+    navigate("/");
+    FailALert("โปรดเข้าสู่ระบบก่อน");
+  };
 
   const navigate = useNavigate();
 
@@ -179,7 +185,7 @@ function Navbar() {
             />
             <ShoppingBagOutlinedIcon
               onClick={() => {
-                !isAuthorized ? navigate("/") : navigate("/cart");
+                !isAuthorized ? exit() : navigate("/cart");
               }}
               sx={{
                 fontSize: "5vh",

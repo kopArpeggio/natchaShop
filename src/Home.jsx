@@ -43,12 +43,14 @@ function Home() {
   ];
   const itemData2 = [
     {
-      img: "/assets/img/Capture.JPG",
+      img: "/assets/img/Cover.png",
       title: "shirt",
     },
+  ];
+  const itemData3 = [
     {
-      img: "/assets/img/DRY-EX.JPG",
-      title: "shirt1",
+      img: "/assets/img/Size.png",
+      title: "shirt",
     },
   ];
 
@@ -101,7 +103,7 @@ function Home() {
         {itemData2.map((item) => (
           <ImageListItem
             key={item.img}
-            cols={item.cols || 1}
+            cols={item.cols || 3}
             rows={item.rows || 3}
           >
             <img
@@ -142,6 +144,38 @@ function Home() {
               sx={{ display: "flex" }}
               key={item.img}
               cols={item.cols || 1}
+              rows={item.rows || 3}
+            >
+              <img
+                {...srcset(item.img, "1000", item.rows, item.cols)}
+                alt={item.title}
+                loading="lazy"
+              />
+              <ImageListItemBar title={"ซื้อ"} />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </Container>
+
+      <Container
+        sx={{
+          maxWidth: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <ImageList
+          sx={{ width: "100%", justifyContent: "center" }}
+          variant="quilted"
+          cols={2}
+          rowHeight={"150"}
+          gap={10}
+        >
+          {itemData3?.map((item) => (
+            <ImageListItem
+              sx={{ display: "flex" }}
+              key={item.img}
+              cols={item.cols || 3}
               rows={item.rows || 3}
             >
               <img
